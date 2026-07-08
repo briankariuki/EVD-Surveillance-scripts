@@ -10,5 +10,5 @@ attributes:
       backfill_policy:
         type: single_run           # a backfill range = one windowed run
       translation:
-        key: "evd_screening/{{ resource.name }}"
-        group_name: evd_screening
+        key: "krcs_evd_screening/{{ resource.name }}"
+        group_name: krcs_evd_screening

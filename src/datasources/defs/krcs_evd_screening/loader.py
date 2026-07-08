@@ -44,12 +44,12 @@ def _client() -> RESTClient:
     reading them at module scope would turn a missing token into a failed
     definition load rather than a failed run.
     """
-    base_url = dlt.secrets["datasources.evd_screening.base_url"]
-    key = dlt.secrets["datasources.evd_screening.api_key"]
-    secret = dlt.secrets["datasources.evd_screening.api_secret"]
+    base_url = dlt.secrets["datasources.krcs_evd_screening.base_url"]
+    key = dlt.secrets["datasources.krcs_evd_screening.api_key"]
+    secret = dlt.secrets["datasources.krcs_evd_screening.api_secret"]
 
     # An *absent* key raises ConfigFieldMissingException above. An unset
-    # compose variable is different: `${EVD_SCREENING_API_KEY:-}` resolves to
+    # compose variable is different: `${KRCS_EVD_SCREENING_API_KEY:-}` resolves to
     # the empty string, which dlt reads as present. Without this, the run
     # would sail on and fail as an opaque 403 from Frappe.
     missing = [
@@ -57,8 +57,8 @@ def _client() -> RESTClient:
     ]
     if missing:
         raise ValueError(
-            f"datasources.evd_screening: empty or unset: {', '.join(missing)}. Set these in "
-            ".dlt/secrets.toml, or as DATASOURCES__EVD_SCREENING__* env vars "
+            f"datasources.krcs_evd_screening: empty or unset: {', '.join(missing)}. Set these in "
+            ".dlt/secrets.toml, or as DATASOURCES__KRCS_EVD_SCREENING__* env vars "
             "(docker-compose forwards them from .env)."
         )
 
@@ -69,8 +69,8 @@ def _client() -> RESTClient:
     )
 
 
-@dlt.source(name="evd_screening", max_table_nesting=0)
-def evd_screening_source():
+@dlt.source(name="krcs_evd_screening", max_table_nesting=0)
+def krcs_evd_screening_source():
     @dlt.resource(
         name="screenings",
         primary_key="screeningIdentifier",
@@ -96,10 +96,10 @@ def evd_screening_source():
     return screenings
 
 
-source = evd_screening_source()
+source = krcs_evd_screening_source()
 
 pipeline = dlt.pipeline(
-    pipeline_name="evd_screening",
+    pipeline_name="krcs_evd_screening",
     destination="filesystem",
-    dataset_name="evd_screening_raw",
+    dataset_name="krcs_evd_screening_raw",
 )
