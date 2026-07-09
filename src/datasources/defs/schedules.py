@@ -54,6 +54,7 @@ sync_cbs_daily = dg.build_schedule_from_partitioned_job(
     hour_of_day=6,
     name="sync_cbs_daily",
     description="Syncs the previous day's CBS reports and screenings every day at 06:00 UTC",
+)
 krcs_evd_screening_sync_job = dg.define_asset_job(
     name="krcs_evd_screening_sync_job",
     selection=dg.AssetSelection.groups("krcs_evd_screening"),
