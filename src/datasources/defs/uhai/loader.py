@@ -39,7 +39,7 @@ def _row_to_screening(row: dict[str, Any]) -> dict[str, Any]:
         "system_id": _iso(row.get("system_id")),
         "nationality": row.get("nationality") or "",
         "identifier_type": row.get("id_type") or "",
-        "identifier_number": identifier_number,
+        "identifier": identifier_number,
         "suspected": "yes" if row.get("risk_level") == "high_risk" else "no",
         "screening": row.get("status") or "",
         "confirmed": "",
@@ -121,4 +121,5 @@ pipeline = dlt.pipeline(
     pipeline_name="uhai",
     destination="filesystem",
     dataset_name="uhai_raw",
+    progress=dlt.progress.tqdm(colour="yellow"),
 )

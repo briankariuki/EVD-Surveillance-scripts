@@ -14,6 +14,20 @@ sync_mdharura_signals_daily = dg.build_schedule_from_partitioned_job(
     description="Syncs the previous day's signals from m-Dharura every day at 06:00 UTC",
 )
 
+adam_sync_job = dg.define_asset_job(
+    name="adam_sync_job",
+    selection=dg.AssetSelection.groups("adam"),
+    description="Loads ADaM cases and travellers for one partition (day) into MinIO",
+)
+
+# daily-partitioned job -> schedule fires at 05:00 UTC for the previous day
+sync_adam_daily = dg.build_schedule_from_partitioned_job(
+    adam_sync_job,
+    hour_of_day=5,
+    name="sync_adam_daily",
+    description="Syncs the previous day's cases and travellers from ADaM every day at 05:00 UTC",
+)
+
 lims_sync_job = dg.define_asset_job(
     name="lims_sync_job",
     selection=dg.AssetSelection.groups("lims"),
@@ -39,5 +53,31 @@ sync_uhai_screenings_daily = dg.build_schedule_from_partitioned_job(
     uhai_sync_job,
     hour_of_day=4,
     name="sync_uhai_screenings_daily",
-    description="Syncs the previous day's Uhai traveler screenings every day at 04:00 UTC",
+    description="Syncs the previous day's Uhai traveler screenings every day at 04:00 UTC"
+)
+cbs_sync_job = dg.define_asset_job(
+    name="cbs_sync_job",
+    selection=dg.AssetSelection.groups("cbs"),
+    description="Loads CBS reports and screenings for one partition (day) into MinIO",
+)
+
+# daily-partitioned job -> schedule fires at 06:00 UTC for the previous day
+sync_cbs_daily = dg.build_schedule_from_partitioned_job(
+    cbs_sync_job,
+    hour_of_day=6,
+    name="sync_cbs_daily",
+    description="Syncs the previous day's CBS reports and screenings every day at 06:00 UTC"
+)
+krcs_evd_screening_sync_job = dg.define_asset_job(
+    name="krcs_evd_screening_sync_job",
+    selection=dg.AssetSelection.groups("krcs_evd_screening"),
+    description="Loads PoE health screenings for one partition (day) into MinIO",
+)
+
+# daily-partitioned job -> schedule fires at 07:00 UTC for the previous day
+sync_krcs_evd_screening_screenings_daily = dg.build_schedule_from_partitioned_job(
+    krcs_evd_screening_sync_job,
+    hour_of_day=7,
+    name="sync_krcs_evd_screening_screenings_daily",
+    description="Syncs the previous day's PoE health screenings every day at 07:00 UTC",
 )
